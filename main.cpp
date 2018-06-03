@@ -155,18 +155,13 @@ void move(Figure *Current_figure)
 /////////////////////////FINISH
 /////////////////////////FINISH
 
-Figure *Fig[board_side * board_side];
+Figure *Fig[board_side] [board_side];
 
 int main(void)
 {
-	for (int i = 0, _horizontal = 0, _vertical = 0, _status = 10, _membership = 0, _state = 0; i < (board_side * board_side); ++i)
-	{
-		
-
-
-
-		Fig[i] = new Figure(_horizontal, _vertical, _status, _membership, _state);
-	}
+	
+	
+		Fig[i][] = new Figure(horizontal, vertical, _status, _membership, _state);
 	
 	
 
