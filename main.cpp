@@ -1,6 +1,6 @@
 /********************************
  *
- *	town trams planing
+ *	
  *	this code was tested on Ubuntu and Windows OS
  *  
  *	test task is made by Alex
@@ -13,7 +13,9 @@
 #include <stdio.h>
 
 //#include "chess.ini"
-//#include "chess.h"
+#include "chess.h"
+#include "Figure.h"
+#include "chessUtilities.h"
 
 using namespace std;
 
@@ -154,12 +156,12 @@ void move(Figure *Current_figure)// class affiliation is undefined
 }*/
 
 Figure *Fig[BOARD_SIDE][BOARD_SIDE] = {nullptr};
-void set_All_Figures(Figure *, int );
+void set_All_Figures(Figure* Fig[BOARD_SIDE][BOARD_SIDE], int BOARD_SIDE);
 
 int main(void)
 {
-//	set_All_Figures(Fig, BOARD_SIDE);
-	int horizontal = A, vertical = ONE, _status = CHECKER, _membership = 0; 
+	set_All_Figures(Fig, BOARD_SIDE);
+	/*int horizontal = A, vertical = ONE, _status = CHECKER, _membership = 0; 
 	bool _state = 0;
 	for (int h = 0; h < BOARD_SIDE; ++h)
 	{
@@ -196,8 +198,8 @@ int main(void)
 			//vertical = v;	it is a case without ZERO
 			
 			Fig[v][h] = new Figure(horizontal, vertical, _status, _membership, _state);	
-		}		
-	}
+		}	
+	}*/	
 
 	cout << "\n" << endl;
 	for (int v = (BOARD_SIDE - 1); v >= 0; --v)
@@ -214,9 +216,10 @@ int main(void)
 			delete Fig[v][h];
 	
 	// HOW TO CHECK MEMORY CLEANING ?
-	// HOW WRITE CORRECT Pointer Figure[][] as an argument ?
+	// HOW WRITE CORRECT Pointer Figure[][] as an argument ? is resolved
 	// HOW to replace/substitute part of code without aguments and a returned value ?
 	// how to use struct/class "coords" within class Figure 
+	// how to search with parameter(s)
 
 	//move(Fig[0][0]);
 
@@ -224,21 +227,51 @@ int main(void)
 	
 	return 0;
 }
-/*
-void set_All_Figures(Figure *Fig, int BOARD_SIDE)
+
+inline bool isAlive(int v, int h)
 {
-	int horizontal = A, vertical = ONE, _status = CHECKER; 
-	bool _membership = 0, _state = 0;
+	 return ( 
+	 			( v == ONE && (!(h%2)) ) ||
+				( v == TWO && ((h%2)) ) ||
+				( v == THREE && (!(h%2)) ) ||
+				( v == SIX && ((h%2)) ) ||
+				( v == SEVEN && (!(h%2)) ) ||
+				( v == EIGHT && ((h%2)) ) 
+			);	
+
+}
+void set_All_Figures(Figure* Fig[BOARD_SIDE][BOARD_SIDE], int BOARD_SIDE)
+{
+	int horizontal = A, vertical = ONE, _status = CHECKER, _membership = 0; 
+	bool _state = 0;
 	for (int h = 0; h < BOARD_SIDE; ++h)
 	{
 		for (int v = 0; v < BOARD_SIDE; ++v) 
 		{
-			if(h == ONE)
-				Fig[v][h] = new Figure(horizontal, vertical, _status, _membership, 1);
-			else
-				Fig[v][h] = new Figure(horizontal, vertical, _status, _membership, 0);
-		}
+			if (isAlive(v,h))
+			{
+				_state = ALIVE;
+				if ( v == ONE ||
+					 v == TWO ||
+					 v == THREE )
+					 _membership = BLACK;
 		
-	}
+				if ( v == SIX ||
+					 v == SEVEN ||
+					 v == EIGHT )
+					 _membership = WHITE;
+			}
+			else
+			{
+				_state = DEAD;
+				_membership = NOTHING;
+			}
+			horizontal = h + 1;
+			vertical = v + 1;
+			//horizontal = h; it is a case without ZERO
+			//vertical = v;	it is a case without ZERO
+			
+			Fig[v][h] = new Figure(horizontal, vertical, _status, _membership, _state);	
+		}
+	}	
 }
-*/
